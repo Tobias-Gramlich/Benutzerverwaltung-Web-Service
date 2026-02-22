@@ -1,0 +1,44 @@
+services:
+  db:
+    image: mariadb:11
+    container_name: users-db
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: ${DB_NAME}
+      MARIADB_USER: ${DB_USER}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mariadb-admin", "ping", "-h", "localhost", "-p${DB_ROOT_PASSWORD}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: users-api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+
+    # Liest deine src/.env ein (die bleibt lokal und geht nicht ins Image)
+    env_file:
+      - ./.env
+
+    # WICHTIG: DB Host im Container ist der Service-Name "db"
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+
+    ports:
+      - "3001:3001" # anpassen, falls du anders läufst
+
+volumes:
+  db_data:
