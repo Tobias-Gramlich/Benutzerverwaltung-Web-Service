@@ -10,12 +10,12 @@ const validatePassword = (password) => {
     const minLength = 8;
 
     //* Test for valid Format
-    if (!regexCapitalLetter.test(password)) return {error: "Password must contain a Capital Letter"};
-    if (!regexSmallLetter.test(password)) return {error: "Password must contain a Small Letter"};
-    if (!regexNumber.test(password)) return {error: "Password must contain a Number"};
-    if (!regexSpecialCharacters.test(password)) return {error: "Password must contain a Special Character"};
-    if(password.length < minLength) return {error: `Password must be longer than ${minLength - 1} Characters`};
-    if(password.length > maxLength) return {error: `Password must be shorter than ${maxLength + 1} Characters`};
+    if (!regexCapitalLetter.test(password)) return {success: false, error: "Password must contain a Capital Letter"};
+    if (!regexSmallLetter.test(password)) return {success: false, error: "Password must contain a Small Letter"};
+    if (!regexNumber.test(password)) return {success: false, error: "Password must contain a Number"};
+    if (!regexSpecialCharacters.test(password)) return {success: false, error: "Password must contain a Special Character"};
+    if(password.length < minLength) return {success: false, error: `Password must be longer than ${minLength - 1} Characters`};
+    if(password.length > maxLength) return {success: false, error: `Password must be shorter than ${maxLength + 1} Characters`};
 
     //* Return Success
     return {success: true};
