@@ -35,6 +35,10 @@ Benutzerverwaltung-Web-Service <br>
 - Endpunkt zum registieren eines Benutzers. Der Benutzer wird noch nicht angemeldet und der Account ist noch nicht aktiviert, erhält jedoch einen Aktivierungscode per E-Mail.
 - POST /Users/register -> {username: string, password: string, email: string} -> {success: true} || {error: string}
 
+## EMail Versand
+- Endpunkt zum erneuten Versenden des Aktivierungscode.
+- POST /Users/send_email -> {username: string, password: string} -> {success: true} || {error: string}
+
 ## Aktivierung:
 - Endpunkt zum Aktivieren eines Accounts mithilfe des verschickten Aktivierungscode. Account ist danach aktiviert, aber Benutzer wird noch nicht eingeloggt.
 - POST /Users/activate -> {username: string, activationcode: int} -> {success: true} || {error: string}
