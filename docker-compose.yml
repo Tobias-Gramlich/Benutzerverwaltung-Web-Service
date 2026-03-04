@@ -9,7 +9,7 @@ services:
       MARIADB_PASSWORD: ${DB_PASSWORD}
       MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
     ports:
-      - "3307:3306"
+      - ${DOCKER_PORT}
     volumes:
       - db_data:/var/lib/mysql
     healthcheck:
@@ -28,17 +28,15 @@ services:
       db:
         condition: service_healthy
 
-    # Liest deine src/.env ein (die bleibt lokal und geht nicht ins Image)
     env_file:
       - ./.env
 
-    # WICHTIG: DB Host im Container ist der Service-Name "db"
     environment:
       DB_HOST: db
       DB_PORT: 3306
 
     ports:
-      - "3001:3001" # anpassen, falls du anders läufst
+      - ${DOCKER_DB_PORT}
 
 volumes:
   db_data:
