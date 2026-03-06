@@ -27,17 +27,12 @@ Benutzerverwaltung-Web-Service <br>
 │   │   │   ├── validateEmail.js <br>
 │   │   │   ├── validatePassword.js <br>
 │   │   │   └── validateUsername.js <br>
-│   │   ├── mailer.js (E-Mail Sendefunktion) <br>
 │   │   └── validateToken.js (Validierungsfunktion für JWT) <br>
 
 # Endpunkte:
 ## Registrierung:
-- Endpunkt zum registieren eines Benutzers. Der Benutzer wird noch nicht angemeldet und der Account ist noch nicht aktiviert, erhält jedoch einen Aktivierungscode per E-Mail.
-- POST /Users/register -> {username: string, password: string, email: string} -> {success: true} || {success: false, error: string}
-
-## EMail Versand
-- Endpunkt zum erneuten Versenden des Aktivierungscode.
-- POST /Users/send_email -> {username: string, password: string} -> {success: true} || {success: false, error: string}
+- Endpunkt zum registieren eines Benutzers. Der Benutzer wird noch nicht angemeldet und der Account ist noch nicht aktiviert, erhält jedoch einen Aktivierungscode.
+- POST /Users/register -> {username: string, password: string, email: string} -> {success: true, activationcode: int} || {success: false, error: string}
 
 ## Aktivierung:
 - Endpunkt zum Aktivieren eines Accounts mithilfe des verschickten Aktivierungscode. Account ist danach aktiviert, aber Benutzer wird noch nicht eingeloggt.

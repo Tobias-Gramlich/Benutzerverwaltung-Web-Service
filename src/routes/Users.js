@@ -10,7 +10,6 @@ const {validateUsername} = require("../utils/Inputvalidation/validateUsername");
 const {validatePassword} = require("../utils/Inputvalidation/validatePassword");
 const {validateEmail} = require("../utils/Inputvalidation/validateEmail");
 const {validateToken} = require("../utils/validateToken");
-const {sendMail} = require("../utils/mailer");
 
 //* Post Endpoints
 //* Register a User to the Database 
@@ -56,45 +55,8 @@ router.post('/register', async (req, res) => {
         Users.create({username: username, password: hash, email: email, activationcode: activationcode});
     });
 
-    //* Send Verification EMail
-    await sendMail({
-        to: email,
-        subject: "Benutzerverwaltung Verification", 
-        text: `Guten Tag ${username}! Hier ihr Aktivierungscode: ${activationcode}`
-    });
-
-    //* Return Success
-    return res.json({success: true});
-});
-
-//* Send Activation Code again
-//* {username: string, password: string}
-router.post('/send_email', async (req, res) => {
-    //* Deconstruct Body
-    const username = req.body.username;
-    const password = req.body.password;
-
-    //* Errorchecks
-    //* Check if each Component is available
-    if (!username) return res.status(409).json({success: false, error: "Missing Username"});
-    if (!password) return res.status(409).json({success: false, error: "Missing Password"});
-
-    //* Find User
-    const User = await Users.findOne({where: {username: username}});
-
-    //* Check if User exists and if Account is activated
-    if(!User) return res.status(409).json({success: false, error: "User doesnt exist"});
-    if(User.activationcode === 1) return res.status(409).json({success: false, error: "Account already activated"});
-
-    //* Send Verification EMail
-    await sendMail({
-        to: User.email,
-        subject: "Benutzerverwaltung Verification", 
-        text: `Guten Tag ${User.username}! Hier ihr Aktivierungscode: ${User.activationcode}`
-    });
-
-    //* Return Success
-    return res.json({success: true});
+    //* Return Success and ActivationCode
+    return res.json({success: true, activationcode: activationcode});
 });
 
 //* Activate Account with Activation Code
