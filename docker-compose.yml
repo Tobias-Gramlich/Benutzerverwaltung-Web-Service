@@ -9,7 +9,7 @@ services:
       MARIADB_PASSWORD: ${DB_PASSWORD}
       MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
     ports:
-      - ${DOCKER_PORT}
+      - ${DOCKER_DB_PORT}
     volumes:
       - db_data:/var/lib/mysql
     healthcheck:
@@ -36,7 +36,7 @@ services:
       DB_PORT: 3306
 
     ports:
-      - ${DOCKER_DB_PORT}
+      - ${DOCKER_PORT}
 
 volumes:
   db_data:
